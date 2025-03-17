@@ -636,7 +636,7 @@ class: text-center
 config:
     themeVariables:
         xyChart:
-            backgroundColor: "#121212"
+            backgroundColor: "#0C0D1B"
 ---
     xychart-beta
     x-axis [Python, Cython, "Cython (prange)"]
