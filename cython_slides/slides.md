@@ -55,15 +55,14 @@ mdc: true
 ---
 transition: fade-out
 ---
-
-# whoami
+<div class="slide-container">
+<h1>whoami</h1>
 
 - 🐍 **Python Web Developer** w Deployed.pl
 - 🧑‍🏫 Od wielu lat udzielam korepetycji z **Pythona**
 - 🧑‍💻 **Cythona** poznałem na studiach, ale nie wykorzystuję go w swojej codziennej pracy
 - ⚽🏴󠁧󠁢󠁥󠁮󠁧󠁿 Poza programowaniem interesuję się piłką nożną, szczególnie w wydaniu **angielskim**
-
-
+</div>
 <!--
 
 -->
@@ -360,10 +359,8 @@ Running Cython version...
 <div v-click="13">Porównujemy wyniki...
 ```
 Running Python version...
-uv run python -c "from src.loop.original import loop; print(loop())"
 49999995000000
 Running Cython version...
-uv run python -c "from src.loop.optimized import loop; print(loop())"
 49999995000000
 ```
 </div>
@@ -1060,7 +1057,7 @@ Bez znajomości C/C++ można korzystać z Cythona, ale nie można w pełni wykor
 <div>
 <img 
   v-motion
-  :enter="{ x: 175, scale: 1 }"
+  :enter="{ x: 135, y: -55, scale: 0.7 }"
   src="./img/patrick.gif"
   alt=""
 >
@@ -1078,7 +1075,7 @@ bez znajomości chociażby podstaw Pythona będzie bardzo trudne.
 <div>
 <img 
   v-motion
-  :enter="{ x: 135, scale: 1 }"
+  :enter="{ x: 90, y: -40, scale: 0.7 }"
   src="./img/monkey-tools.gif"
   alt=""
 >
@@ -1100,58 +1097,3 @@ class: text-center
 
 * https://cython.readthedocs.io/
 * Kurt W. Smith - _"Cython. A guide for Python programmers"_, O’Reilly Media,Inc., 2015
-
----
-
-# Next steps:
-- kiedy nie warto używać cythona
-- może line_profiler zadziała
-
-
----
-
-# Clicks Animations
-
-You can add `v-click` to elements to add a click animation.
-
-<div v-click>
-
-This shows up when you click the slide:
-
-```html
-<div v-click>This shows up when you click the slide.</div>
-```
-
-</div>
-
-<br>
-
-<v-click>
-
-The <span v-mark.red="3"><code>v-mark</code> directive</span>
-also allows you to add
-<span v-mark.circle.orange="4">inline marks</span>
-, powered by [Rough Notation](https://roughnotation.com/):
-
-```html
-<span v-mark.underline.orange>inline markers</span>
-```
-
-</v-click>
-
-<div mt-20 v-click>
-
-[Learn more](https://sli.dev/guide/animations#click-animation)
-
-</div>
-
----
-layout: center
-class: text-center
----
-
-# Learn More
-
-[Documentation](https://sli.dev) · [GitHub](https://github.com/slidevjs/slidev) · [Showcases](https://sli.dev/resources/showcases)
-
-<PoweredBySlidev mt-10 />
