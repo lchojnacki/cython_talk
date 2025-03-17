@@ -1,18 +1,14 @@
 ---
 # You can also start simply with 'default'
-theme: light-icons
+theme: default
 # random image from a curated Unsplash collection by Anthony
 # like them? see https://unsplash.com/collections/94734566/slidev
-background: https://cover.sli.dev
+background: ./img/dpld_bg.png
 # some information about your slides (markdown enabled)
 title: "Cython: Turbodoładowanie Pythona czy zbędna komplikacja?" 
 info: |
-  ## Slidev Starter Template
-  Presentation slides for developers.
-
-  Learn more at [Sli.dev](https://sli.dev)
+  Cython talk slides
 # apply unocss classes to the current slide
-class: text-center
 # https://sli.dev/features/drawing
 drawings:
   persist: false
@@ -21,12 +17,36 @@ transition: slide-left
 # enable MDC Syntax: https://sli.dev/features/mdc
 mdc: true
 ---
-
-# Cython: Turbodoładowanie Pythona czy zbędna komplikacja?
-
-Volt, 2025-03-25
-
-Łukasz Chojnacki
+<div class="title-slide-container">
+    <div class="title-slide-left">
+        <div class="title-slide-logo">
+            <img src="./img/dpld.png">
+        </div>
+        <div class="title-slide-title">
+            <h1>Cython: Turbodoładowanie Pythona czy zbędna komplikacja?</h1>
+        </div>
+        <div class="title-slide-accent">
+            <h3>2025-03-25</h3>
+        </div>
+    </div>
+    <div>
+        <div style="padding: 40px 0 10px 0">
+            <h3 class="title-slide-accent">Prezentuje:</h3>
+        </div>
+        <div>
+            <img src="./img/tag.png" class="title-slide-tag">
+        </div>
+        <div>
+            <img src="./img/IMG_6682.jpg" class="title-slide-presenter-image">
+        </div>
+        <div class="title-slide-presenter-name">
+            <h2>Łukasz Chojnacki</h2>
+        </div>
+        <div>
+            <h3 class="title-slide-accent">Python Developer</h3>
+        </div>
+    </div>
+</div>
 
 <!--
 
@@ -37,8 +57,6 @@ transition: fade-out
 ---
 
 # whoami
-
-Łukasz Chojnacki
 
 - 🐍 **Python Web Developer** w Deployed.pl
 - 🧑‍🏫 Od wielu lat udzielam korepetycji z **Pythona**
@@ -783,12 +801,11 @@ def lettercount(filename: str = "./data/6mb-text-file.txt"):
 
     return letter_counts
 ```
-```python{*|2,8-10|16|24|*}
+```python{*|2,7-9|15|23|*}
 import cython
 from cython.cimports.libc.stdio import fclose, fopen, FILE
 from cython.cimports.posix.stdio import getline
 from cython.cimports.libcpp.unordered_map import unordered_map
-
 
 def lettercount(filename: bytes = b"./data/6mb-text-file.txt"):
     file = fopen(filename, b"r")
@@ -809,12 +826,11 @@ def lettercount(filename: bytes = b"./data/6mb-text-file.txt"):
 
     return {chr(key): value for key, value in letter_counts}
 ```
-```python{*|15-16|*}
+```python{*|14-15|*}
 import cython
 from cython.cimports.libc.stdio import fclose, fopen, FILE
 from cython.cimports.posix.stdio import getline
 from cython.cimports.libcpp.unordered_map import unordered_map
-
 
 def lettercount(filename: bytes = b"./data/biblia-tysiaclecia.txt"):
     {...}

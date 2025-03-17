@@ -1,0 +1,55 @@
+@font-face {
+    font-family: 'Asap';
+    src: url('./fonts/Asap-VariableFont_wdth,wght.ttf')  format('truetype')
+}
+@font-face {
+    font-family: 'Fira Code';
+    src: url('./fonts/FiraCode-VariableFont_wght.ttf')  format('truetype')
+}
+
+.slidev-layout {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.333), rgba(0, 0, 0, 0.533)), url("./img/dpld_bg.png");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+}
+
+.title-slide-container {
+    display: flex;
+}
+.title-slide-left {
+    width: 70%;
+}
+.title-slide-logo {
+    padding-bottom: 100px;
+    max-width: 200px;
+}
+.title-slide-title {
+    padding-bottom: 100px;
+}
+.title-slide-title h1 {
+    font-family: Asap;
+    font-weight: bold;
+    font-size: 35pt !important;
+    line-height: 35pt !important;
+}
+.title-slide-accent {
+    color: #3da9fc;
+    font-family: 'Fira Code';
+}
+.title-slide-presenter-image {
+    width: 250px;
+    border: 20px solid white;
+}
+.title-slide-presenter-name {
+    padding: 10px 0; font-family: Asap; font-weight: bold
+}
+.title-slide-tag {
+    width: 150px;
+    position: absolute;
+    margin-left: 160px;
+    margin-top: -60px;
+}
+slidev-layout h1 {
+    font-family: Asap !important;
+}
