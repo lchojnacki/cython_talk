@@ -1,18 +1,11 @@
 ---
-# You can also start simply with 'default'
 theme: default
-# random image from a curated Unsplash collection by Anthony
-# like them? see https://unsplash.com/collections/94734566/slidev
 background: ./img/dpld_bg.png
-# some information about your slides (markdown enabled)
 title: "Cython: Turbodoładowanie Pythona czy zbędna komplikacja?" 
 info: |
   Cython talk slides
-# apply unocss classes to the current slide
-# https://sli.dev/features/drawing
 drawings:
   persist: false
-# slide transition: https://sli.dev/guide/animations.html#slide-transitions
 transition: slide-left
 # enable MDC Syntax: https://sli.dev/features/mdc
 mdc: true
@@ -53,19 +46,32 @@ mdc: true
 -->
 
 ---
-transition: fade-out
 ---
-<div class="slide-container">
-<h1>whoami</h1>
+# whoami
 
-- 🐍 **Python Web Developer** w Deployed.pl
-- 🧑‍🏫 Od wielu lat udzielam korepetycji z **Pythona**
-- 🧑‍💻 **Cythona** poznałem na studiach, ale nie wykorzystuję go w swojej codziennej pracy
-- ⚽🏴󠁧󠁢󠁥󠁮󠁧󠁿 Poza programowaniem interesuję się piłką nożną, szczególnie w wydaniu **angielskim**
-</div>
+- 🐍 **Python Web Developer** w Deployed.pl.
+- 🧑‍🏫 Od wielu lat prowadzę korepetycje z **Pythona** dla osób na różnych poziomach zaawansowania.
+- 🧑‍💻 **Cythona** poznałem na studiach i wykorzystałem w swojej pracy magisterskiej. Do przygotowania prezentacji na jego temat zainspirowało mnie pytanie z publiczności podczas niedawego PyKonika.
+- ⚽🏴󠁧󠁢󠁥󠁮󠁧󠁿 Poza programowaniem interesuję się **piłką nożną**, szczególnie w wydaniu **angielskim**.
+
 <!--
 
 -->
+
+---
+transition: fade-out
+---
+
+# Agenda
+
+<ol>
+<li><strong>Wprowadzenie do Cythona</strong> – czym jest, jak działa, podstawowa konfiguracja</li>
+<li><strong>Optymalizacja kodu Pythona</strong> – wpływ kompilacji, analiza wydajności, statyczne typy</li>
+<li><strong>Przyspieszanie obliczeń</strong> – pułapki i wielowątkowość</li>
+<li><strong>Ręczna alokacja pamięci</strong> – zarządzanie tablicami i wskaźnikami</li>
+<li><strong>Przetwarzanie plików i struktury danych</strong> – operacje na plikach, wydajność vs. wygoda</li>
+<li><strong>Kiedy warto, a kiedy nie?</strong> – kluczowe wnioski i najlepsze praktyki</li>
+</ol>
 
 ---
 level: 2
@@ -578,10 +584,18 @@ def pi(loops: cython.int = 999_999) -> cython.double:
     return pi_estimate
 ```
 ````
-<arrow v-click="[2,3]" x1="550" y1="180" x2="395" y2="245" color="#953" width="2" arrowSize="1" />
+<arrow v-click="[2,4]" x1="550" y1="180" x2="395" y2="245" color="#953" width="2" arrowSize="1" />
 
-<div v-click="[3,5]">Kompilujemy...</div>
-<div v-click="[4,5]">Porównujemy wyniki...
+<div v-click="[3,4]">
+    <img
+        v-motion
+        :enter="{x: 180, y: -320, scale: 0.7}"
+        src="./img/python_with_gil.jpeg" style="position: absolute"
+    >
+</div>
+
+<div v-click="[4,5]">Kompilujemy...</div>
+<div v-click="[5,6]">Porównujemy wyniki...
 ```
 Running Python version...
 3.141592653589787
@@ -760,9 +774,7 @@ from pathlib import Path
 
 
 def lettercount(filename: str = "./data/6mb-text-file.txt"):
-    file_path = Path(filename)
-
-    with file_path.open("r", encoding="utf-8") as f:
+    with Path(filename).open("r", encoding="utf-8") as f:
         text = f.read().lower()
 
     # Filter only lowercase ASCII letters and count them
@@ -779,12 +791,11 @@ from pathlib import Path
 
 
 def lettercount(filename: str = "./data/6mb-text-file.txt"):
-    file_path = Path(filename)
     letter_counts = dict()
 
-    with file_path.open("r", encoding="utf-8") as file:
+    with Path(filename).open("r", encoding="utf-8") as f:
         while True:
-            line = file.readline()
+            line = f.readline()
             if not line:
                 break
             for letter in line.lower():
@@ -798,16 +809,15 @@ def lettercount(filename: str = "./data/6mb-text-file.txt"):
 
     return letter_counts
 ```
-```python{*|2,7-9|15|23|*}
+```python{*|2,7-9|4,14|22|*}
 import cython
 from cython.cimports.libc.stdio import fclose, fopen, FILE
 from cython.cimports.posix.stdio import getline
 from cython.cimports.libcpp.unordered_map import unordered_map
 
 def lettercount(filename: bytes = b"./data/6mb-text-file.txt"):
-    file = fopen(filename, b"r")
-
-    if file is cython.NULL: return
+    f = fopen(filename, b"r")
+    if f is cython.NULL: return
 
     line: cython.p_char = cython.NULL
     l: cython.size_t = 1
@@ -819,11 +829,11 @@ def lettercount(filename: bytes = b"./data/6mb-text-file.txt"):
     while True:
         {...}
 
-    fclose(file)
+    fclose(f)
 
     return {chr(key): value for key, value in letter_counts}
 ```
-```python{*|14-15|*}
+```python{*|13-14|*}
 import cython
 from cython.cimports.libc.stdio import fclose, fopen, FILE
 from cython.cimports.posix.stdio import getline
@@ -831,9 +841,8 @@ from cython.cimports.libcpp.unordered_map import unordered_map
 
 def lettercount(filename: bytes = b"./data/biblia-tysiaclecia.txt"):
     {...}
-
     while True:
-        read = getline(cython.address(line), cython.address(l), file)
+        read = getline(cython.address(line), cython.address(l), f)
         if read == -1:
             break
         for letter in line:
@@ -845,7 +854,7 @@ def lettercount(filename: bytes = b"./data/biblia-tysiaclecia.txt"):
                 else:
                     letter_counts[letter] += 1
 
-    fclose(file)
+    fclose(f)
 
     return {chr(key): value for key, value in letter_counts}
 
@@ -1090,6 +1099,43 @@ class: text-center
 # Dzięki za uwagę!
 
 <img src="./img/any-questions.gif">
+
+---
+
+<div class="title-slide-container">
+    <div class="title-slide-left">
+        <div class="title-slide-logo">
+            <img src="./img/dpld.png">
+        </div>
+        <div class="title-slide-title">
+            <h1>Cython: Turbodoładowanie Pythona czy zbędna komplikacja?</h1>
+        </div>
+        <div class="title-slide-accent">
+            <h3>2025-03-25</h3>
+        </div>
+    </div>
+    <div>
+        <div style="padding: 40px 0 10px 0">
+            <h3 class="title-slide-accent">Prezentuje:</h3>
+        </div>
+        <div>
+            <img src="./img/tag.png" class="title-slide-tag">
+        </div>
+        <div>
+            <img src="./img/IMG_6682.jpg" class="title-slide-presenter-image">
+        </div>
+        <div class="title-slide-presenter-name">
+            <h2>Łukasz Chojnacki</h2>
+        </div>
+        <div>
+            <h3 class="title-slide-accent">Python Developer</h3>
+        </div>
+    </div>
+</div>
+
+<!--
+
+-->
 
 ---
 
