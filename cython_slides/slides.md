@@ -175,14 +175,11 @@ const final_cython_text = {
 }
 </script>
 <!--
-Nadzbiorem Pythona, chociaż od wydania wersji 3 w 2023 roku to pojęcie się trochę
-rozmyło. Obecnie można z niego korzystać trochę jak z biblioteki
-udostępniającej dodatkowe typy czy dostęp do funkcji C/C++.
-
-Kompilatorem Pythona do C/C++.
-
-Za dokumentacją - prawie każdy kod w Pythonie można skompilować za pomocą Cythona.
-
+* nadzbiór
+* 2023 - wydanie wersji 3
+* wcześniej pyx, teraz py
+* teraz biblioteka, dodatkowe typy, dostęp do funkcji C/C++
+* kompilator - dokumentacja każdy Python można skompilować
 -->
 
 ---
@@ -203,6 +200,10 @@ Za dokumentacją - prawie każdy kod w Pythonie można skompilować za pomocą C
   alt=""
 >
 </div>
+
+<!--
+można pyproject.toml, ale wsparcie jest jeszcze ograniczone
+-->
 
 ---
 layout: center
@@ -264,8 +265,14 @@ Running Cython version...
 </div>
 
 <!--
-Skoro prawie każdy kod Pythona poprawnym kodem Cythona, to sprawdźmy jaki efekt 
-osiągniemy po prostu kompilując go. 
+* funkcja pythonowa, suma 10 mln kolejnych liczb
+* n(n+1)/2, utrudnione
+* setup.py Extension - deklaracja ext w C
+* dodatkowe argumenty kompilacji
+* `python setup.py build_ext`
+* annotate - kilka slajdów dalej
+* timeit - import nie jest mierzony, tylko wykonanie
+* timeit sam dobiera loops = wiarygodność, szybki powtarza dużo razy
 -->
 
 ---
@@ -280,6 +287,10 @@ class: text-center
 >
 </div>
 
+<!--
+idziemy założyć wątek na SO
+-->
+
 ---
 layout: center
 class: text-center
@@ -293,9 +304,9 @@ class: text-center
 </div>
 
 <!--
-Sama kompilacja kodu Pythona zwykle nie przyspieszy kodu, ponieważ wygenerowany
-kod nadal będzie korzystał z obiektów pythona, a co za tym idzie, komunikował
-się z interpreterem pythona.
+* kompilacja != przyspieszenie
+* obiekty pythona
+* komunikacja z interpreterem
 -->
 
 ---
@@ -307,12 +318,11 @@ się z interpreterem pythona.
 </div>
 
 <!--
-Raport interakcji kodu Cythona z interpreterem Pythona. Biały = zero interakcji
-z pythonem, maksymalna wydajność. Im ciemniejszy żółty, tym więcej interakcji
-z pythonem. Raport jest interaktywny - kliknięcie w linijkę odsłania kod C,
-który jej odpowiada.
-
-Najwięcej interakcji z pythonem - deklaracja funkcji i nagłówek pętli for.
+* annotate
+* biały == 0 interakcji
+* interaktywny raport
+* deklaracja funkcji
+* nagłówek pętli
 -->
 
 ---
@@ -411,7 +421,10 @@ Running Cython version...
 
 
 <!--
-Typ zmiennej result jest za mały, wynik nie mieści się w int
+* typy z cythona
+* dwie nowe linijki, import i deklaracja zmiennej i
+* porównanie wyników -> mem -> clear
+* pytanie - co jest źle -> highlight -> long -> mem int is int
 -->
 
 ---
@@ -426,7 +439,8 @@ class: text-center
 </div>
 
 <!--
-Następny przykład: liczba pi + prange
+* próbujemy wycisnąć więcej
+* pytanie - skąd bierzemy pi w pythonie
 -->
 
 ---
@@ -450,6 +464,14 @@ $$
 3 + \sum_{n=1}^{\infty} -((-1)^n) \frac{4}{(2*n) * (2*n+1) * (2*n+2)}  
 $$
 </div>
+
+<!-- 
+* zrobimy wolniej i mniej dokładnie
+* na przemian dodajemy i odejmujemy
+* po uproszczeniu - suma
+* da się uprościć jeszcze bardziej, ale na potrzeby przykładu to wystarczy
+* pytanie jak zastąpić operator sumy
+-->
 
 ---
 
@@ -528,11 +550,11 @@ Running Cython version...
 <div v-click="12">🚀</div>
 
 <!--
-cdivision - pomija pythonową walidację, np. nie rzuci ZeroDivisionError, ok 35% szybsza operacja dzielenia jeśli True
-
-cpow - utrzymuje typ wyniku potęgowania taki sam jak typy operandów
-
-
+* python -> cythonowe typy
+* [hl] cdivision - skip validation (ZeroDivisionError)
+* True = 35% szybciej
+* [hl] cpow - typ wyniku ** się nie zmienia
+* pytanie dlaczego wynik jest zły -> hl
 -->
 
 ---
@@ -546,6 +568,10 @@ class: text-center
   alt=""
 >
 </div>
+
+<!--
+ten sam kod, wiele wątków
+-->
 
 ---
 
@@ -594,7 +620,7 @@ def pi(loops: cython.int = 999_999) -> cython.double:
     >
 </div>
 
-<div v-click="[4,5]">Kompilujemy...</div>
+<div v-click="[4,6]">Kompilujemy...</div>
 <div v-click="[5,6]">Porównujemy wyniki...
 ```
 Running Python version...
@@ -604,7 +630,7 @@ Running Cython version...
 ```
 </div>
 
-<div v-click="5" style="margin-top: -150px; z-index: 999">Mierzymy czas...
+<div v-click="6" style="margin-top: -150px; z-index: 999">Mierzymy czas...
 ```
 Running Python version...
 1 loop, best of 5: 296 msec per loop
@@ -613,7 +639,7 @@ Running Cython version...
 ```
 </div>
 
-<div v-click="6">
+<div v-click="7">
 <img
   v-motion
   :enter="{ y: -200, x: 250, scale: 0.5 }"
@@ -623,17 +649,16 @@ Running Cython version...
 </div>
 
 <!--
-
-prange używa wątków, domyślnie tworzy tyle wątków ile rdzeni ma procesor, można zmienić to zachowanie
-
-w naszym przypadku nie ma znaczenia kolejność dodawania wyrazów szeregu, każdy wyraz jest w stanie samodzielnie się wyliczyć
-
-prange wymaga wyłączenia GIL, który uniemożliwia współbieżne wykonywanie kodu
-
-oprócz pokazanej tu metody GIL można też wyłączyć dekoratorem i context managerem
-
-prange wymaga instalacji OpenMP w systemie i przekazania odpowiedniej flagi podczas kompilacji
-
+* prange = wątki
+* default = tyle co rdzeni, configurable
+* kolejność nie ma znaczenia
+[click]
+* [arrow] wymagany nogil
+[click]
+* nogil -> dekorator, context manager
+* mem robotnicy
+[click:3]
+* kompilacja wymaga OpenMP + flagi w setup.py
 -->
 
 ---
@@ -660,10 +685,9 @@ config:
 </div>
 
 <!--
-cython ok 23x szybszy
-cython + prange ok 4 razy szybszy niż zwykły cython
-
-nie zawsze tak jest: tutaj wyszło fajnie, bo mamy dużo iteracji - przy 15 iteracjach wersja prange wypadła minimialnie gorzej niż zwykła range - narzut na tworzenie wątków
+* cython ok 23x szybszy
+* cython + prange jeszcze 4x
+* narzut na tworzenie wątków - przy 15 iteracji prange jest wolniejszy
 -->
 
 ---
@@ -677,6 +701,10 @@ class: text-center
   alt=""
 >
 </div>
+
+<!--
+pytanie o zagrożenia wykorzystania malloc - wycieki pamięci, brak obsługi błędów (zwraca NULL)
+-->
 
 ---
 
@@ -722,13 +750,13 @@ następnie tak utworzoną listę wypełniamy kolejnymi liczbami parzystymi
 
 [click] jak ktoś pamięta składnię malloc w C to zauważy tu znajomą składnię
 
-[click] robimy alokację pamięci rozmiary size * sizeof(int)
+[click] robimy alokację pamięci rozmiaru size * sizeof(int)
 
 [click] wykonujemy cast na typ p_int, czyli wskaźnik na int
 
 [click] powinniśmy ręcznie obsłużyć potencjalny z alokacją
 
-[click] zwracaną wartość rzutujemy na pythonową listę, co zmniejsza wydajność, ale python nie poradzi sobie jak dostanie wskaźnik na int
+[click] robimy pythonową listę, mniejsza wydajność
 
 [click] obowiązkowo też zwalniamy pamięć
 -->
@@ -755,11 +783,10 @@ Running Cython version...
 </div>
 
 <!--
-nie jest źle, ale mogłoby być lepiej - konwersja na listę pythonową zabija wydajność
-
-na przykładzie z malloc widać, że czasami kod napisany w cythonie będzie się znacznie różnił od  tego w pythonie
-
-podobnie będzie w kolejnym przypadku, gdzie będziemy otwierać plik tekstowy i liczyć statystykę występujących w nim liter
+[click:2]
+* lista zabija wydajność
+* kod Cy różni się od Py
+* -> więcej różnic
 -->
 
 ---
@@ -798,7 +825,7 @@ def lettercount(filename: str = "./data/6mb-text-file.txt"):
             line = f.readline()
             if not line:
                 break
-            for letter in line.lower():
+            for letter in line:
                 if letter.isupper():
                     letter = letter.lower()
                 if letter in string.ascii_lowercase:
@@ -862,21 +889,20 @@ def lettercount(filename: bytes = b"./data/biblia-tysiaclecia.txt"):
 ````
 
 <!--
-Napisany w czystym Pythonie kod jest nieprzenaszalny 1:1 do C/C++ - ten napisany tutaj jest zwięzły i czytelny, bo to Python
-
-[click] przekształcona forma czyta plik linia po linii, konwertuje pojedyncze znaki na lowercase i nie używa Countera ani nawet defaultdict - aby jak najbardziej zbliżyć się do tego, co moglibśmy napisać bez użycia pythona
-
-co ciekawe, nie ma to wcale dużego przełożenia na performance - obydwie wykonują się między 250 a 300 ms
-
-[click] kod przepisany na cythona przestał mieścić się na jednym slajdzie, więc pokażę go w dwóch etapach
-
-[click] widać, że wykorzystamy otwieranie plików znane z języka C
-
-[click] użyjemy też kolekcji `unordered_map` z C++ do zasymulowania pythonowego słownika
-
-[click] na końcu i tak musimy przekonwertować wynik na słownik, aby wywołujący funkcję kod pythona sobie z tym poradził
-
-[click:3] iterując po kolejnych znakach linii otrzymamy ich liczbową reprezentację, więc +32 zamiast lower
+* niemożliwy w C
+[click]
+* nie korzystamy z ficzerów pythona
+* 250-300 ms
+[click]
+* długi kod, zwijamy while
+[click]
+* fopen znane z C
+[click]
+* `unordered_map` C++ = dict
+[click]
+* convert to dict, rozwijamy while
+[click:3]
+* int, +32 zamiast lower
 -->
 
 ---
@@ -908,6 +934,10 @@ Running Cython version...
 ```
 </div>
 
+<!--
+fajnie, szybciej, użyję wszędzie
+-->
+
 ---
 layout: center
 class: text-center
@@ -919,6 +949,10 @@ class: text-center
   alt=""
 >
 </div>
+
+<!--
+pytanie: tak/nie?
+-->
 
 ---
 layout: center
@@ -953,25 +987,27 @@ class: text-center
 
 <!--
 
-[click] Jeśli Cython to młotek, to nie każdy problem powinien wyglądać jak gwóźdż.
+[click]
+* 🔨 gwóźdź
+* web = sieć, baza, JOINy
+* 15ms optymalizacji to mało
+* często asyncio
+[click]
+* są zoptymalizowane, korzystają z C lub Rusta
+[click]
+* zliczanie liter - dużo dodatkowego kodu, czytelność > wydajność
+[click]
+* .so lub .pyd
+[click]
+* narzut, dodatkowa wiedza zespołu, czasami po prostu ma działać
+[click]
+* często spowolni development
+* dużo źródeł `.pyx` a nie `.py`.
+[click:3]
+* pi
+[click]
+* ma to swoje ograniczenia
 
-W aplikacjach webowych często wąskim gardłem jest sieć lub baza danych. Optymalizacja 200ms na 175ms będzie niezauważalna.
-W przypadku Django najczęstsze optymalizacje to odpowiednio wykonane JOINy pomiędzy tabelkami w bazie danych.
-
-Często lepszym rozwiązaniem będzie wykorzystanie asyncio.
-
-[click] te biblioteki są już zoptymalizowane i korzystają pod spodem z C lub Rusta
-
-[click] widzieliśmy na przykładzie zliczania liter ile kodu trzeba dopisać aby był optymalniejszy
-
-[click] kompilator produkuje pliki .so lub .pyd w zależności od platformy
-
-[click] Czasami wydajność nie jest kluczowa, a dodatkowa porcja wiedzy jaką musi przyswoić zespół aby utrzymywać kod w Cythonie jest niepotrzebnym narzutem
-
-[click] wykorzystanie Cythona często spowolni development
-
-trochę problematyczne jest to, że Cython 3, wprowadzający tryb "Pure Python" oficjalnie pojawił się w 2023 roku, więc wiele źródeł podaje rozwiązania problemów dla starszych wersji,
-gdzie kod pisało się w pliku `.pyx` a nie `.py`.
 
 -->
 
@@ -1037,19 +1073,13 @@ Wiele projektów znanych ze swojej szybkości wykorzystuje Cythona:
 </div>
 
 <!--
-asyncpg
-
-uvloop
-
-kivy
-
-lxml
-
-pandas
-
-scikit-learn
-
-scipy
+* asyncpg
+* uvloop
+* kivy
+* lxml
+* pandas
+* scikit-learn
+* scipy
 -->
 
 ---
@@ -1073,6 +1103,10 @@ Bez znajomości C/C++ można korzystać z Cythona, ale nie można w pełni wykor
 </div>
 </div>
 
+<!--
+Nie, ale się przydaje, są pułapki
+-->
+
 ---
 
 # Czy programista C może pisać w Cythonie bez znajomości Pythona?
@@ -1090,6 +1124,10 @@ bez znajomości chociażby podstaw Pythona będzie bardzo trudne.
 >
 </div>
 </div>
+
+<!--
+Nie, ale Python jest łatwy
+-->
 
 ---
 layout: center
