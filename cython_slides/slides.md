@@ -123,6 +123,21 @@ level: 2
   </div>
 </div>
 
+<div v-click="[5,7]" class="absolute" style="z-index: 10">
+    <img 
+        v-motion
+        :enter="{x: 0, y: 0, scale: 1}"
+        src="./img/cython3.png"
+    >
+</div>
+<div v-click="[6,7]" class="absolute" style="z-index: 10">
+    <img
+        v-motion
+        :enter="{x: -90, y: -360, scale: 0.3}"
+        src="./img/py_pyx.webp"
+    >
+</div>
+
 <!-- vue script setup scripts can be directly used in markdown, and will only affects current page -->
 <script setup lang="ts">
 const final_python = {
@@ -255,7 +270,14 @@ Running Cython version...
 49999995000000
 ```
 </div>
-<div v-click="4">Mierzymy czas...
+<div v-click="[4,5]" class="absolute" style="z-index: 10">
+    <img
+        v-motion
+        :enter="{x: 0, y: -360, scale: 0.8}"
+        src="./img/timeit.png"
+    >
+</div>
+<div v-click="5">Mierzymy czas...
 ```
 Running Python version...
 1 loop, best of 5: 223 msec per loop
@@ -447,7 +469,7 @@ class: text-center
 
 # Przybliżenie liczby π
 <div></div>
-Czyli wykorzystujemy algorym z XV wieku zamiast wykonać `from math import pi`
+Czyli wykorzystujemy algorytm z XV wieku, zamiast wykonać `from math import pi`
 
 <div v-click>
 <br>Szereg Nilakantha:
@@ -678,6 +700,7 @@ config:
             backgroundColor: "#0C0D1B"
 ---
     xychart-beta
+    title "Porównanie wydajności, mniej = lepiej"
     x-axis [Python, Cython, "Cython (prange)"]
     y-axis "Time (msec)" 0 --> 300
     bar [296, 12.9, 2.75]
@@ -970,20 +993,20 @@ class: text-center
 
 # Kiedy nie warto używać Cythona?
 
-<div v-click>1. Kiedy Twój problem nie leży w wydajności Pythona 🤷</div>
-<div v-click>2. Kiedy Twój problem można rozwiązać bibliotekami typu numpy/pandas/polars 🐻‍❄️</div>
-<div v-click>3. Kiedy Twój kod bazuje na algorytmach i strukturach danych wbudowanych w Pythona 🐍</div>
-<div v-click>4. Kiedy Twój program ma być przenośny między systemami operacyjnymi 🚚</div>
-<div v-click>5. Kiedy Twój program nie musi być szybki 🐌</div>
-<div v-click>6. Kiedy Twój projekt musi być dowieziony szybko ⏲️</div>
+<div v-click>🤷 Kiedy Twój problem nie leży w wydajności Pythona</div>
+<div v-click>🐻‍❄️ Kiedy Twój problem można rozwiązać bibliotekami typu numpy/pandas/polars</div>
+<div v-click>🐍 Kiedy Twój kod bazuje na algorytmach i strukturach danych wbudowanych w Pythona</div>
+<div v-click>🚚 Kiedy Twój program ma być przenośny między systemami operacyjnymi</div>
+<div v-click>🐌 Kiedy Twój program nie musi być szybki</div>
+<div v-click>⏲️ Kiedy Twój projekt musi być dowieziony szybko</div>
 
 <div v-click><br>Czy zatem warto w ogóle zaprzątać sobie tym głowę?</div>
 
 <div v-click><br>Tak! Jeśli:</div>
 
-<div v-click>1. Masz intensywne obliczeniowo operacje, które jesteś w stanie wyizolować bez użycia typów Pythona 🧩</div>
-<div v-click>2. Chcesz łatwo zrównoleglić obliczenia bez ograniczeń GIL ⛓️‍💥</div>
-<div v-click>3. Chcesz zintegrować się z bibliotekami języka C/C++ 🧑‍💻</div>
+<div v-click>🧩 Masz intensywne obliczeniowo operacje, które jesteś w stanie wyizolować bez użycia typów Pythona</div>
+<div v-click>⛓️‍💥 Chcesz łatwo zrównoleglić obliczenia bez ograniczeń GIL</div>
+<div v-click>🧑‍💻 Chcesz zintegrować się z bibliotekami języka C/C++</div>
 
 <!--
 
@@ -1037,19 +1060,19 @@ Wiele projektów znanych ze swojej szybkości wykorzystuje Cythona:
 <img
   v-click="2"
   v-motion
-  :enter="{ x: 475, y: -320, scale: 0.7 }"
+  :enter="{ x: 475, y: -280, scale: 0.7 }"
   src="./img/uvloop.png"
 >
 <img
   v-click="3"
   v-motion
-  :enter="{ x: 575, y: -350, scale: 0.7 }"
+  :enter="{ x: 575, y: -300, scale: 0.7 }"
   src="./img/kivy.png"
 >
 <img
   v-click="4"
   v-motion
-  :enter="{ x: 575, y: -750, scale: 0.7 }"
+  :enter="{ x: 575, y: -700, scale: 0.7 }"
   src="./img/lxml.png"
 >
 <img
