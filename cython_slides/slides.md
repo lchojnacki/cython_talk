@@ -1141,8 +1141,8 @@ bez znajomości chociażby podstaw Pythona będzie bardzo trudne.
 <div>
 <img 
   v-motion
-  :enter="{ x: 90, y: -40, scale: 0.7 }"
-  src="./img/monkey-tools.gif"
+  :enter="{ x: 180, y: 10 }"
+  src="./img/misuse_tools.webp"
   alt=""
 >
 </div>
