@@ -1,7 +1,7 @@
 ---
 theme: default
 background: ./img/dpld_bg.png
-title: "Cython: Turbodoładowanie Pythona czy zbędna komplikacja?" 
+title: "Cython: Turbodoładowanie Pythona czy zbędna komplikacja?"
 info: |
   Cython talk slides
 drawings:
@@ -124,7 +124,7 @@ level: 2
 </div>
 
 <div v-click="[5,7]" class="absolute" style="z-index: 10">
-    <img 
+    <img
         v-motion
         :enter="{x: 0, y: 0, scale: 1}"
         src="./img/cython3.png"
@@ -191,8 +191,11 @@ const final_cython_text = {
 </script>
 <!--
 * nadzbiór
+[click:5]
 * 2023 - wydanie wersji 3
+[click]
 * wcześniej pyx, teraz py
+[click]
 * teraz biblioteka, dodatkowe typy, dostęp do funkcji C/C++
 * kompilator - dokumentacja każdy Python można skompilować
 -->
@@ -208,10 +211,10 @@ const final_cython_text = {
 <div v-click>4. Kompilator C/C++ wytwarza plik .so (Unix) lub .pyd (Windows) 🧙‍♂️</div>
 <div v-click>5. Skompilowany plik możesz zaimportować w kodzie Pythona 🐍</div>
 <div v-click>6. Profit 🚀
-<img 
+<img
   v-motion
   :enter="{ y: -100, x: 0, scale: 0.5 }"
-  src="./img/I_Am_Speed.jpg" 
+  src="./img/I_Am_Speed.jpg"
   alt=""
 >
 </div>
@@ -352,7 +355,7 @@ class: text-center
 # Make Cython great again!
 
 ````md magic-move {at: 1, lines: true}
-```python 
+```python
 def loop(n: int = 10_000_000) -> int:
     result = 0
     for i in range(n):
@@ -475,7 +478,7 @@ Czyli wykorzystujemy algorytm z XV wieku, zamiast wykonać `from math import pi`
 <br>Szereg Nilakantha:
 
 $$
-3 + \frac{4}{2+3+4} - \frac{4}{4+5+6} + \frac{4}{6+7+8} - \frac{4}{8+9+10} + ... 
+3 + \frac{4}{2+3+4} - \frac{4}{4+5+6} + \frac{4}{6+7+8} - \frac{4}{8+9+10} + ...
 $$
 </div>
 
@@ -483,11 +486,11 @@ $$
 <br>Przedstawiony za pomocą sumy:
 
 $$
-3 + \sum_{n=1}^{\infty} -((-1)^n) \frac{4}{(2*n) * (2*n+1) * (2*n+2)}  
+3 + \sum_{n=1}^{\infty} -((-1)^n) \frac{4}{(2*n) * (2*n+1) * (2*n+2)}
 $$
 </div>
 
-<!-- 
+<!--
 * zrobimy wolniej i mniej dokładnie
 * na przemian dodajemy i odejmujemy
 * po uproszczeniu - suma
@@ -829,7 +832,7 @@ def lettercount(filename: str = "./data/6mb-text-file.txt"):
 
     # Filter only lowercase ASCII letters and count them
     letter_counts = Counter(
-        letter for letter in text 
+        letter for letter in text
         if letter in string.ascii_lowercase
     )
 
@@ -937,12 +940,12 @@ Dane są sortowane alfabetycznie już po zwróceniu z funkcji, aby nie zaburzyć
 Walidacja wyników:
 ```
 Running Python version...
-{'a': 341977, 'b': 84467, 'c': 151037, 'd': 146691, 'e': 318719, 'f': 6232, 'g': 68704, 'h': 45303, 'i': 408257, 
-'j': 93793, 'k': 103787, 'l': 83617, 'm': 132526, 'n': 178039, 'o': 284004, 'p': 101724, 'q': 2, 'r': 156178, 
+{'a': 341977, 'b': 84467, 'c': 151037, 'd': 146691, 'e': 318719, 'f': 6232, 'g': 68704, 'h': 45303, 'i': 408257,
+'j': 93793, 'k': 103787, 'l': 83617, 'm': 132526, 'n': 178039, 'o': 284004, 'p': 101724, 'q': 2, 'r': 156178,
 's': 185192, 't': 125342, 'u': 82149, 'v': 95, 'w': 179369, 'x': 31, 'y': 154438, 'z': 242550}
 Running Cython version...
-{'a': 341977, 'b': 84467, 'c': 151037, 'd': 146691, 'e': 318719, 'f': 6232, 'g': 68704, 'h': 45303, 'i': 408257, 
-'j': 93793, 'k': 103787, 'l': 83617, 'm': 132526, 'n': 178039, 'o': 284004, 'p': 101724, 'q': 2, 'r': 156178, 
+{'a': 341977, 'b': 84467, 'c': 151037, 'd': 146691, 'e': 318719, 'f': 6232, 'g': 68704, 'h': 45303, 'i': 408257,
+'j': 93793, 'k': 103787, 'l': 83617, 'm': 132526, 'n': 178039, 'o': 284004, 'p': 101724, 'q': 2, 'r': 156178,
 's': 185192, 't': 125342, 'u': 82149, 'v': 95, 'w': 179369, 'x': 31, 'y': 154438, 'z': 242550}
 ```
 
@@ -1117,7 +1120,7 @@ Bez znajomości C/C++ można korzystać z Cythona, ale nie można w pełni wykor
 Łatwo też wpędzić się w pułapki takie jak dzielenie liczb całkowitych czy przepełnienie typu int.
 
 <div>
-<img 
+<img
   v-motion
   :enter="{ x: 135, y: -55, scale: 0.7 }"
   src="./img/patrick.gif"
@@ -1135,11 +1138,11 @@ Nie, ale się przydaje, są pułapki
 # Czy programista C może pisać w Cythonie bez znajomości Pythona?
 
 <div v-click>
-Praktycznie nie. Cython jest nadzbiorem Pythona, co oznacza, że korzysta z jego składni. Wykorzystanie Cythona 
+Praktycznie nie. Cython jest nadzbiorem Pythona, co oznacza, że korzysta z jego składni. Wykorzystanie Cythona
 bez znajomości chociażby podstaw Pythona będzie bardzo trudne.
 
 <div>
-<img 
+<img
   v-motion
   :enter="{ x: 180, y: 10 }"
   src="./img/misuse_tools.webp"
@@ -1160,6 +1163,19 @@ class: text-center
 # Dzięki za uwagę!
 
 <img src="./img/any-questions.gif">
+
+---
+
+# Kod źródłowy i slajdy:
+
+<div>
+<img
+  v-motion
+  :enter="{ y: -200, scale: 0.5 }"
+  src="./img/QR.png"
+  alt=""
+>
+</div>
 
 ---
 
