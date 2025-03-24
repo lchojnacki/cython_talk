@@ -1,0 +1,35 @@
+# Builds the Cython extensions.
+build:
+    uv run setup.py build_ext --inplace
+
+# Runs the selected benchmark in Python and Cython.
+run benchmark="pi":
+    @echo "Running benchmark '{{benchmark}}'..."
+    @echo "Running Python version..."
+    @uv run -m timeit -s "from src.{{benchmark}}.original import {{benchmark}}" "{{benchmark}}()"
+    @echo "Running Cython version..."
+    @uv run -m timeit -s "from src.{{benchmark}}.optimized import {{benchmark}}" "{{benchmark}}()"
+
+# Validates outputs of both versions - they should be the same
+validate benchmark="pi":
+    @echo "Running benchmark '{{benchmark}}'..."
+    @echo "Running Python version..."
+    uv run python -c "from src.{{benchmark}}.original import {{benchmark}}; print({{benchmark}}())"
+    @echo "Running Cython version..."
+    uv run python -c "from src.{{benchmark}}.optimized import {{benchmark}}; print({{benchmark}}())"
+
+# Creates the file structure for a new benchmark.
+new benchmark:
+    @echo "Adding benchmark: {{benchmark}}..."
+    @mkdir -p src/{{benchmark}}
+    @touch src/{{benchmark}}/__init__.py
+    @echo "def {{benchmark}}(): ..." >> src/{{benchmark}}/original.py
+    @mkdir -p cython/{{benchmark}}
+    @echo "def {{benchmark}}(): ..." >> "cython/{{benchmark}}/optimized.py"
+    @sed -i "/extensions = \[/a \    Extension(\"{{benchmark}}.optimized\", [\"cython/{{benchmark}}/optimized.py\"])," setup.py
+    @echo "Benchmark {{benchmark}} created."
+
+# Lists available benchmarks.
+list-benchmarks:
+    @echo "Available benchmarks:"
+    @find cython -mindepth 1 -maxdepth 1 -type d ! -name "__*" -printf "* %f\n"

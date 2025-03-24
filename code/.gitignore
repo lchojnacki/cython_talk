@@ -1,0 +1,7 @@
+./.venv
+build
+*.so
+*.pyc
+cython/**/*.c
+cython/**/*.cpp
+cython/**/*.html
