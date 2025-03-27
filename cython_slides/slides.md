@@ -1179,6 +1179,19 @@ class: text-center
 
 ---
 
+# Gdzie można nas znaleźć?
+
+<div>
+<img
+  v-motion
+  :enter="{ y: -200, scale: 0.5 }"
+  src="./img/QR_deployed.png"
+  alt=""
+>
+</div>
+
+---
+
 <div class="title-slide-container">
     <div class="title-slide-left">
         <div class="title-slide-logo">
